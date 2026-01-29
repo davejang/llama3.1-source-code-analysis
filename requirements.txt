@@ -1,0 +1,8 @@
+python-dotenv=1.2.1
+langchain==1.2.7
+langchain-community==0.4.1
+langchain-classic==1.0.1
+langchain-core==1.2.7
+llama-cpp-python==0.3.16
+mcp==1.26.0
+pandas>=3.0.0

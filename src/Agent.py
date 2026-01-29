@@ -41,7 +41,7 @@ async def run_analysis_agent():
 
     # ReAct 에이전트용 프롬프트 (Context7 문서 반영을 유도)
     template = """
-    당신은 전 세계 상위 1% 소프트웨어 아키텍트입니다.
+    당신은 20년차 소프트웨어 아키텍트입니다.
     제공된 코드를 분석할 때, 사용된 라이브러리의 최신 버전 문서를 확인하여 비즈니스 가치와 유지보수성 관점에서 보고서를 작성하세요.
 
     사용 가능한 도구: {tool_names}
@@ -69,7 +69,14 @@ async def run_analysis_agent():
     """
     prompt = PromptTemplate.from_template(template)
     agent = create_react_agent(llm, tools, prompt)
-    agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
+    agent_executor = AgentExecutor(
+        agent=agent, 
+        tools=tools, 
+        verbose=True, 
+        handle_parsing_errors=True,
+        max_iterations=5, # 최대 5회까지만 도구 사용/생각 허용
+        early_stopping_method="generate"
+    )
 
     with open(file_path, "r", encoding="UTF-8") as f:
         code_content = f.read()
